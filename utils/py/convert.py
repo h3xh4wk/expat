@@ -17,7 +17,7 @@ def main():
     basepath = os.path.abspath(os.path.dirname(__file__))
     srcpath = os.path.join(basepath,"from")
     tgtpath = os.path.join(basepath,"to")
-    command = """ffmpeg -i %(src)s -s 176x144 -vcodec h263 -acodec aac -ac 1 -ar 8000 -r 25 -ab 32k -y -strict -2 %(tgt)s"""
+    command = """ffmpeg -i %(src)s -s 352x288 -vcodec h263 -acodec aac -ac 1 -ar 8000 -r 25 -ab 32k -y -strict -2 %(tgt)s"""
     if not os.path.isdir(srcpath):
         os.mkdir(srcpath)
         print("I think you forgot to copy source files in from")
