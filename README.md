@@ -1,2 +1,11 @@
 expat
 =====
+vim
+Python
+virtualenvwrapper
+flask
+pyselenium
+nose
+Sphinx
+python-twitter
+speedtest-cli
