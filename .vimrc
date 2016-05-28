@@ -156,6 +156,8 @@ set laststatus=2
 " Settings for ctrlp
 " cd ~/.vim/bundle
 " git clone https://github.com/kien/ctrlp.vim.git
+" git@github.com:ctrlpvim/ctrlp.vim.git
+" for installation http://ctrlpvim.github.io/ctrlp.vim/#installation
 let g:ctrlp_max_height = 30
 set wildignore+=*.pyc
 set wildignore+=*_build/*
