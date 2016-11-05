@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 from lxml import etree, html
 import os
 import csv
@@ -11,6 +10,9 @@ tcCount=0
 moduleName=None
 
 def parseNavigator():
+    global moduleName
+    global tcCount
+
     try:
         doc = html.parse(os.path.join(TEST_DIRECTORY,'Navigator.html'))
     except Exception,e:
