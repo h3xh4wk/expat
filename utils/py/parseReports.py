@@ -43,8 +43,6 @@ def parseNavigator():
                 failure = getTestcasefailure(tcdoc)
                 failure = failure.replace(",",";")
                 #import ipdb; ipdb.set_trace() # BREAKPOINT
-
-
             tcCount+=1
 
             # TODO: write to file only if test case name matches a pattern
