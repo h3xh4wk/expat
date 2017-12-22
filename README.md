@@ -9,3 +9,4 @@ nose
 Sphinx
 python-twitter
 speedtest-cli
+Ardunio
