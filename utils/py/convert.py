@@ -8,13 +8,12 @@ Pre-requisites - ffmpeg
 import os
 import sys
 
-def main():
+def main(basepath):
     """
     utility to convert mp4 videos to 3gp.
     my new basic nokia support 3gp.
 
     """
-    basepath = os.path.abspath(os.path.dirname(__file__))
     srcpath = os.path.join(basepath,"from")
     tgtpath = os.path.join(basepath,"to")
     command = """ffmpeg -i %(src)s -s 352x288 -vcodec h263 -acodec aac -ac 1 -ar 8000 -r 25 -ab 32k -y -strict -2 %(tgt)s"""
@@ -35,9 +34,15 @@ def main():
                 os.system(command % (
                     {'src': os.path.join(srcpath,f),
                     'tgt': os.path.join(tgtpath,f.replace("mp4","3gp"))}))
-            except e:
-                print(e)
+
+            except BaseException(e):
+                print("Some unknown error ", e)
+
+            finally:
+                sys.stdout.buffer.flush()
 
 
 if __name__ == "__main__":
-    main()
+    basepath = os.path.abspath("../../tests/utils/py/convert/")
+    import pdb;pdb.set_trace()
+    main(basepath)
