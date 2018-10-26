@@ -51,6 +51,6 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
-# expat
-from/
+
+#expat
 to/
