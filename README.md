@@ -1,12 +1,3 @@
 expat
 =====
-vim
-Python
-virtualenvwrapper
-flask
-pyselenium
-nose
-Sphinx
-python-twitter
-speedtest-cli
-Ardunio
+My dot files. It becomes easy to setup my working environment.
