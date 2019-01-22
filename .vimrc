@@ -15,11 +15,13 @@ Plugin 'tpope/vim-sleuth'
 Plugin 'tpope/vim-surround'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/nerdtree'
 Plugin 'bling/vim-airline'
 Plugin 'edkolev/tmuxline.vim'
 Plugin 'elzr/vim-json'
 Plugin 'kien/ctrlp.vim'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'ambv/black'
 
 Plugin 'tomasr/molokai'
 Plugin 'flazz/vim-colorschemes'
@@ -146,3 +148,10 @@ set nobackup
 set nowritebackup
 set noswapfile
 
+" Automatically open NERDTree
+" autocmd vimenter * NERDTree
+if &diff
+    map <leader>1 :diffget LOCAL<CR>
+    map <leader>2 :diffget BASE<CR>
+    map <leader>3 :diffget REMOTE<CR>
+endif
