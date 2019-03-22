@@ -1,14 +1,18 @@
 #!/usr/bin/env python
+import os
 from selenium.webdriver import Chrome
 from selenium.webdriver import Firefox
+import shutil
+import time
+
 
 from selenium.webdriver.chrome.options import Options
 
-#TODO: Check if  Scraper can be a subclass of Chrome
 class Scraper(object):
     """ A Simple Scraper Example using Selenium """
 
     def __init__(self, base_url, query_params):
+        self.__take_results_backup()
         options = Options()
         options.add_argument("--headless")
         try:
@@ -17,6 +21,11 @@ class Scraper(object):
             print(f'Error occured during Chrome driver : {e}')
             self.driver=Firefox()
         self.driver.get(base_url + query_params)
+
+    def __take_results_backup(self):
+        if os.path.exists('outfile.csv'):
+            stamp=f'outfile{time.asctime().replace(":", "-").replace(" ","_")}'
+            shutil.move('outfile.csv', stamp)
 
     def __writetofile(self, lines):
         with open('outfile.csv', 'a') as f:
