@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 import os
+
 from selenium.webdriver import Chrome
 from selenium.webdriver import Firefox
+from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import *
+
 import shutil
 import time
 
-
-from selenium.webdriver.chrome.options import Options
-
-class Scraper(object):
+class Scraper:
     """ A Simple Scraper Example using Selenium """
 
     def __init__(self, base_url, query_params):
@@ -21,56 +22,85 @@ class Scraper(object):
             print(f'Error occured during Chrome driver : {e}')
             self.driver=Firefox()
         self.driver.get(base_url + query_params)
+        # set up the next page element
+        self.nextpage_element=self.driver.find_element_by_css_selector(
+                ".pager-next a")
+
 
     def __take_results_backup(self):
         if os.path.exists('outfile.csv'):
             stamp=f'outfile{time.asctime().replace(":", "-").replace(" ","_")}'
             shutil.move('outfile.csv', stamp)
 
-    def __writetofile(self, lines):
+    def __save_info(self, lines):
+        """
+        This method saves the recently collected information line from webpage
+        """
+
         with open('outfile.csv', 'a') as f:
             for line in lines:
                 f.write(line)
 
     def nextpage(self, css_locator):
-        self.driver.find_element_by_css_selector(css_locator).click()
+        self.driver.find_element_by_css_selector(
+                css_locator).click()
 
     def scrape_page(self):
         providers = self.driver.find_elements_by_css_selector(".provider-row")
-        lines=[]
+
         for provider in providers:
-            name = provider.find_element_by_css_selector(
-                    ".provider-base-info h3 a").text
-            email = provider.find_element_by_css_selector(
-                    ".provider-link-details .icon-mail+a").get_attribute(
-                            'href').replace('mailto:','')
-            website = provider.find_element_by_css_selector(
-                    ".provider-link-details .website-link a").get_attribute('href')
-            location = provider.find_element_by_css_selector(
-                    ".provider-info__details div.list-item:nth-of-type(4)").text
+            try:
+                name = provider.find_element_by_css_selector(
+                        ".provider-base-info h3 a").text
+                email = provider.find_element_by_css_selector(
+                        ".provider-link-details .icon-mail+a").get_attribute(
+                                'href').replace('mailto:','')
+                website = provider.find_element_by_css_selector(
+                        ".provider-link-details .website-link a").get_attribute('href')
+                location = provider.find_element_by_css_selector(
+                        ".provider-info__details div.list-item:nth-of-type(4)").text
 
-            lineitem=f'{name.replace(",","-")},{email},{website},{location.replace(",","-")}'
-            lines.append(lineitem + "\n")
+                lineitem=f'{name.replace(",","-")},{email},{website},{location.replace(",","-")}'
 
-        # append the results
-        self.__writetofile(lines)
+                # append the results
+                self.__save_info(lineitem + "\n")
+
+            except NoSuchElementException:
+                # skip information and continue scraping the page
+                continue
+
+            except Exception as e:
+                # discontinue in case of unknown error
+                raise ScrapePageError(f"Error occured during scrape page : {e}")
 
     def scrape(self):
-        for i in range(5):
-            print(f"scraping page {i}")
-            self.scrape_page()
+        # scrape until nextpage function doesn't fail
+        while True:
+            print(f"scraping the website... ")
             try:
+                self.scrape_page()
                 self.nextpage(".pager-next a")
+
+            except ScrapePageError as e:
+                print(e)
+                self.nextpage(".pager-next a")
+                continue
+
             except Exception as e:
-                print("Error while going to next page :", e)
+                print("Something went wrong: ", e)
                 self.driver.close()
                 break
 
+class ScraperError(Exception):
+    pass
+
+class ScrapePageError(ScraperError):
+    pass
 
 if __name__=="__main__":
     # min and max number of employee for query params
-    min_=2
-    max_=9
+    min_=10
+    max_=49
     query_params=f"""/in/it-services/analytics?sort_by=field_pp_page_sponsor&
     field_pp_min_project_size=All&
     field_pp_hrly_rate_range=All&
