@@ -1,9 +1,11 @@
 " Automatic reloading of .vimrc
+"
 autocmd! bufwritepost .vimrc source %
 
 set nocompatible
 set backspace=indent,eol,start
 filetype off
+set encoding=utf-8
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -13,7 +15,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-sleuth'
 Plugin 'tpope/vim-surround'
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
 Plugin 'bling/vim-airline'
@@ -147,6 +149,7 @@ set smartcase
 set nobackup
 set nowritebackup
 set noswapfile
+set nofoldenable "disble folding
 
 " Automatically open NERDTree
 " autocmd vimenter * NERDTree
@@ -155,3 +158,36 @@ if &diff
     map <leader>2 :diffget BASE<CR>
     map <leader>3 :diffget REMOTE<CR>
 endif
+
+let g:airline_powerline_fonts = 1
+
+
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+
+
+" airline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
